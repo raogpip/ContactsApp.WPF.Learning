@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ContactsApp.WPF.Learning.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,50 @@ namespace ContactsApp.WPF.Learning
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        List<Contact> contacts;
+
+        public MainWindow() 
         {
             InitializeComponent();
+
+            contacts = new List<Contact>();
+
+            ReadDatabase();
+        }
+
+        private void newContactButton_Click(object sender, RoutedEventArgs e)
+        {
+            NewContactWindow newContactWindow = new NewContactWindow();
+            newContactWindow.ShowDialog();
+
+            ReadDatabase();
+        }
+
+
+
+        void ReadDatabase()
+        {
+
+            using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(App.databasePath))
+            {
+                conn.CreateTable<Contact>();
+                contacts = conn.Table<Contact>().ToList();
+            }
+
+            if(contacts != null)
+            {
+                contactsList.ItemsSource = contacts;
+                
+            }
+        }
+
+        private void textBoxSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox searchTextBox = sender as TextBox;
+
+            var filteredList = contacts.Where(c => c.Name.ToLower().Contains(searchTextBox.Text.ToLower())).ToList();
+
+            contactsList.ItemsSource = filteredList;
         }
     }
 }
