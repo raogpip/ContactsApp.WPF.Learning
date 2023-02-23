@@ -24,6 +24,8 @@ namespace ContactsApp.WPF.Learning
         public NewContactWindow()
         {
             InitializeComponent();
+            Owner = Application.Current.MainWindow;
+            WindowStartupLocation= WindowStartupLocation.CenterOwner;
         }
 
         private void saveContactButton_Click(object sender, RoutedEventArgs e)

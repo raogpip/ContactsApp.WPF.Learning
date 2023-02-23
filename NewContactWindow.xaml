@@ -9,6 +9,7 @@
     Width="400"
     Height="450"
     ResizeMode="NoResize"
+    WindowStyle="None"
     mc:Ignorable="d">
     <Grid>
         <StackPanel Width="350" Margin="10">
@@ -29,8 +30,12 @@
 
             <Button
                 x:Name="saveContactButton"
+                Height="32"
+                Background="Green"
                 Click="saveContactButton_Click"
-                Content="Save" />
+                Content="Save"
+                FontWeight="Bold"
+                Foreground="White" />
         </StackPanel>
     </Grid>
 </Window>

@@ -48,7 +48,7 @@ namespace ContactsApp.WPF.Learning
             using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(App.databasePath))
             {
                 conn.CreateTable<Contact>();
-                contacts = conn.Table<Contact>().ToList();
+                contacts = (conn.Table<Contact>().ToList()).OrderBy(c => c.Name).ToList();
             }
 
             if(contacts != null)
@@ -66,5 +66,19 @@ namespace ContactsApp.WPF.Learning
 
             contactsList.ItemsSource = filteredList;
         }
+
+        private void contactsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Contact selectedContact = (Contact)contactsList.SelectedItem;
+
+            if(selectedContact != null)
+            {
+                ContactDetailsWindow contactDetailsWindow = new ContactDetailsWindow(selectedContact);
+                contactDetailsWindow.ShowDialog();
+
+                ReadDatabase();
+            }
+        }
+
     }
 }
